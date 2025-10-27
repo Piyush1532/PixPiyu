@@ -9,7 +9,7 @@ const navigate=useNavigate()
   return (
     <div onClick={()=>navigate(`/blog/${_id}`)} className='w-full rounded-lg overflow-hidden shadow hover:scale-102 hover:shadow-[#3EA6A9]/25 duration-300 cursor-pointer'>
       <img src={image} alt="" className='aspect-video' />
-      <span className='ml-5 mt-4 px-3 py-4 inline-block bg-[#3EA6A9]/50 rounded-full text-grey-500 text-xs' >{category}</span>
+      <span className='ml-5 mt-4 p-4 inline-block bg-[#3EA6A9] text-white rounded-full text-grey-500 text-xs' >{category}</span>
       <div className='p-5'>
         <h5 className='mb-2 font-medium text-gray-900'>{title}</h5>
         <p className='mb-3 text-sm text-gray-600' dangerouslySetInnerHTML={{"__html":description.slice(0,80)}}></p>
