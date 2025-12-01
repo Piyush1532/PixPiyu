@@ -5,10 +5,14 @@ import Navbar from '../Components/Navbar'
 import Moment from "moment"
 import Footer from '../Components/Footer'
 import Loader from '../Components/Loader'
+import { useAppContext } from '../Context/AppContext'
+import toast from 'react-hot-toast'
 
 const Blog = () => {
 
  const {blogId}=useParams()
+
+ const {axios}=useAppContext()
 
 const [data,SetData]=useState(null)
 const [comments,SetComments]=useState([])
@@ -18,17 +22,49 @@ const [content,SetContent]=useState("")
 
 
 const fetchBlogData=async () => {
-  const data=blog_data.find(item=>item._id===blogId)
-  SetData(data)
+try {
+  const {data}=await axios.get(`/api/blog/${blogId}`)
+  data.success ? SetData(data.blog) :toast.error(data.message)
+} catch (error) {
+  toast.error(error.message)
+}
 }
 
 const fetchComments=async () => {
-  SetComments(comments_data)
+ try {
+  const {data}=await axios.post(`/api/blog/comments`,{blogId:blogId})
+  if (data.success) {
+    SetComments(data.comments)
+  }else{
+    toast.error(data.message)
+  }
+ } catch (error) {
+  toast.error(error.message)
+ }
 }
 
-const addComment=async (evt) => {
-  evt.preventDefault
-}
+const addComment = async (evt) => {
+  evt.preventDefault();
+  try {
+    const { data } = await axios.post(`/api/blog/add-comment`, {
+      blog: blogId,   // FIXED
+      name,
+      content,
+    });
+ console.log(data)
+    if (data.success) {
+      toast.success(data.message);
+      SetName("");
+      SetContent("");
+      console.log(data.message)
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
 
 
 
@@ -52,10 +88,10 @@ fetchComments()
 <div className='mx-5 max-w-5xl md:mx-auto my-10 mt-6'>
   <img src={data.image} alt=""  className='rounded-3xl mb-5'/>
 
-<div dangerouslySetInnerHTML={{__html:data.description}} className='rich-text max-w-3cl mx-auto '></div>
+<div dangerouslySetInnerHTML={{__html:data.description}} className='rich-text prose-xl max-w-3xl mx-auto text-wrap font-[26px]'></div>
 
 {/* Comment section */}
-<div className='mt-14 mb-10 max-w-3xl mx-auto'>
+<div className='mt-14 mb-10 max-w-3xl mx-auto '>
 <p className='font-semibold mb-4'>Comments {comments.length}</p>
 <div className='flex flex-col gap-4'>
 {comments.map((item,index)=>(
@@ -84,7 +120,7 @@ fetchComments()
 </div>
 
 {/* share btns */}
-<div className='my-24 max-w-3xl mx-auto'>
+<div className='my-24 max-w-3xl mx-auto '>
 <p className='font-semibold my-4 '>Share this articles on social media </p>
 <div className="flex">
   <img src={assets.facebook_icon} alt="" width={50}/>
