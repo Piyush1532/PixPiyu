@@ -9,6 +9,7 @@ const {axios,setToken}=useAppContext()
   const[email,SetEmail]=useState("")
   const[password,SetPassword]=useState("")
 
+  const [showPassword,setshowPassword]=useState(false)
 
 
 
@@ -46,9 +47,10 @@ const handleSubmit=async (e) => {
   <input type="email" required placeholder='Your Email Id'  className='border-b-2 border-gray-300 p-2 outline-none mb-6' onChange={(e)=>SetEmail(e.target.value)} value={email}/>
 </div>
 
-<div className='flex flex-col'>
+<div className='flex flex-col relative'>
   <label>Password</label>
-  <input type="password" required placeholder='Your Password'  className='border-b-2 border-gray-300 p-2 outline-none mb-6' onChange={(e)=>SetPassword(e.target.value)} value={password}/>
+  <input required placeholder='Your Password'  className='border-b-2 border-gray-300 p-2 outline-none mb-6' onChange={(e)=>SetPassword(e.target.value)} value={password} type={showPassword ? "text" : "password"}/>
+  <p className='absolute right-0 top-8 cursor-pointer text-[#3ea69a]' onClick={() => setshowPassword(!showPassword)}> {showPassword ? "Hide" : "Show"}</p>
 </div>
 
 <button type='submit' className='w-full py-3 font-medium bg-[#3EA6A9] text-white rounded cursor-pointer hover:bg-[#3EA6A9]/85 transition-all'>Login</button>
