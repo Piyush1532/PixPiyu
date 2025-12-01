@@ -44,15 +44,15 @@ export const getAllComments=async (req,res) => {
 
 export const getDashBoard=async (req,res) => {
   try {
-    const recentBlog=await Blog.find({}).sort({createdAt:-1}).limit(5)
-const blog=await Blog.countDocuments()
+    const recentBlogs=await Blog.find({}).sort({createdAt:-1}).limit(5)
+const blogs=await Blog.countDocuments()
 const comments=await Comment.countDocuments()
-const draft =await Blog.countDocuments({isPublished:false})
-const dashBoardData={
-  blog,comments,draft,recentBlog
+const drafts =await Blog.countDocuments({isPublished:false})
+const dashboardData={
+  blogs,comments,drafts,recentBlogs
 }
 
-res.json({success:true,dashBoardData})
+res.json({success:true,dashboardData})
   } catch (error) {
     res.json({ success: false, message: error.message }); 
   }
@@ -78,7 +78,7 @@ export const approveCommentById=async (req,res) => {
   try {
     const{id}=req.body
     await Comment.findByIdAndUpdate(id,{isApproved:true})
-    res.json({success:true,message:"Comment deleted succesfully"})
+    res.json({success:true,message:"Comment Approved "})
   } catch (error) {
       res.json({ success: false, message: error.message }); 
   }
