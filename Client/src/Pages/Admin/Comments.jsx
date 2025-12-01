@@ -1,14 +1,22 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { comments_data } from '../../assets/assets'
 import CommentTable from '../../Components/Admin/CommentTable'
+import { useAppContext } from '../../Context/AppContext'
+import toast from 'react-hot-toast'
 
 const Comments = () => {
-const [comments,SetComments]=useState([])
-const [filter,SetFilter]=useState("Not Approved")
+const [comments,setComments]=useState([])
+const [filter,setFilter]=useState("Not Approved")
+
+const {axios}=useAppContext()
 
 const fetchComments=async () => {
-  SetComments(comments_data)
+ try {
+  const {data}=await axios.get("/api/admin/comments")
+  data.success ? setComments(data.comments):toast.error(data.message)
+ } catch (error) {
+  toast.error(error.message)
+ }
 }
 
 useEffect(()=>{
@@ -20,9 +28,9 @@ fetchComments()
       <div className='flex justify-between items-center max-w-3xl'>
 <h1>Comments</h1>
 <div className='flex gap-4'>
-<button onClick={()=>SetFilter("Approved")} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter ==='Approved'? "text-[#3EA6A9]": "text-gray-700"}`}>Approved</button>
+<button onClick={()=>setFilter("Approved")} className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter ==='Approved'? "text-[#3EA6A9]": "text-gray-700"}`}>Approved</button>
 
-<button onClick={()=>SetFilter("Not Approved")}  className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter ==='Not Approved'? "text-[#3EA6A9]": "text-gray-700"}`}>Not Approved</button>
+<button onClick={()=>setFilter("Not Approved")}  className={`shadow-custom-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter ==='Not Approved'? "text-[#3EA6A9]": "text-gray-700"}`}>Not Approved</button>
 </div>
       </div>
 
