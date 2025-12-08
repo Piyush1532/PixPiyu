@@ -5,10 +5,10 @@ import Comment from "../models/commentModel.js";
 
 export const addBlog = async (req, res) => {
   try {
-    const { title, subTitle, description, category, isPublished } = JSON.parse(req.body.blog);
+    const { title, subTitle, description, category, isPublished,author } = JSON.parse(req.body.blog);
     const imageFile = req.file;
 
-    if (!title || !description || !category || !imageFile) {
+    if (!title || !description || !category || !imageFile|| !author) {
       return res.json({ success: false, message: "Missing required fields" });
     }
 
@@ -27,6 +27,7 @@ export const addBlog = async (req, res) => {
     await Blog.create({
       title,
       subTitle,
+      author,
       description,
       category,
       image: optimizeImageUrl,
