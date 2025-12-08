@@ -13,6 +13,7 @@ const AddBlog = () => {
 const [image,setImage]=useState(false)
 const [title,setTitle]=useState("")
 const [subTitle,setSubTitle]=useState("")
+const [author,setAuthor]=useState("")
 const [category,setCategory]=useState("Startup")
 const [isPublished,setIsPublished]=useState(false)
 
@@ -26,6 +27,7 @@ const onSubmitHandler=async (e) => {
     const blog={
       title,
       subTitle,
+      author,
       description:quillRef.current.root.innerHTML,
       category,
       isPublished
@@ -68,7 +70,9 @@ if (!quillRef.current && editorRef.current) {
   return (
     <form className='flex-1 bg-blue-50/20 text-gray-600 h-full overflow-scroll' onSubmit={onSubmitHandler}>
       <div className="bg-white w-full max-w-3xl p-4 md:p-10 sm:m-10 shadow rounded">
-<p>Upload Thumbnail</p>
+<p>Upload Thumbnail
+  
+</p>
 <label htmlFor="image">
   <img src={!image  ?assets.upload_area :URL.createObjectURL(image)} alt="" className='mt-2 h-16 rounded cursor-pointer'/>
   <input type="file" id='image' hidden  required onChange={(e)=>setImage(e.target.files[0])}/>
@@ -79,6 +83,11 @@ if (!quillRef.current && editorRef.current) {
 
 <p className='mt-4'>Subtitle</p>
 <input type="text" placeholder='Type Here' required className='w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded' onChange={(e)=>setSubTitle(e.target.value)} value={subTitle}/>
+
+
+
+<p className='mt-4'>Author</p>
+<input type="text" placeholder='Type Here' required className='w-full max-w-lg mt-2 p-2 border border-gray-300 outline-none rounded' onChange={(e)=>setAuthor(e.target.value)} value={author}/>
 
       
 <p className='mt-4'>Blog Description</p>
